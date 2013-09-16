@@ -1,0 +1,6 @@
+*~
+source/Release/*
+source/*.ncb
+source/*.suo
+source/*.user
+source/*.sln
