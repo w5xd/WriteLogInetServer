@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions 
+	name="ContestQsos_Service" 
+	xmlns="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:tns="http://www.Contestqsos.com/qso" 
+	xmlns:typns="urn:xml-soap-Contest"
+	xmlns:xsd="http://www.w3.org/1999/XMLSchema"
+	targetNamespace="http://www.Contestqsos.com/qso">
+
+<types>
+  <schema
+      targetNamespace="urn:xml-soap-Contest"
+	    xmlns:tns="urn:xml-soap-Contest"
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'
+        xmlns="http://www.w3.org/1999/XMLSchema"
+		>
+
+    <xsd:complexType name="ArrayOfstring">
+	   <sequence>
+		  <element name="str_el" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+	   </sequence> 
+    </xsd:complexType>
+
+    <xsd:complexType name="ArrayOfint">
+	   <sequence>
+		  <element name="int_el" type="xsd:int" minOccurs="0" maxOccurs="unbounded"/>
+	   </sequence> 
+    </xsd:complexType>
+
+    <xsd:complexType
+          name="Qso">
+	  <xsd:sequence>
+		  <xsd:element name="time64H"
+			  type="xsd:int"/>
+		  <xsd:element name="time64L"
+			  type="xsd:int"/>
+		  <xsd:element name="xmitFreq"
+			  type="xsd:double"/>
+		  <xsd:element name="recvFreq"
+			  type="xsd:double"/>
+		  <xsd:element name="band"
+			  type="xsd:int"/>
+		  <xsd:element name="station"
+			  type="xsd:string"/>
+		  <xsd:element name="mode"
+			  type="xsd:int"/>
+		  <xsd:element name="dupe"
+			  type="xsd:int"/>
+		  <xsd:element name="serial"
+			  type="xsd:int"/>
+		  <xsd:element name="qsoparts"
+			  type="tns:ArrayOfstring"/>
+		  <xsd:element name="version"
+			type="xsd:int"/>
+          <xsd:element name="idKey" type="xsd:string"/>
+          <xsd:element name="updatedBy" type="xsd:string"/>
+		</xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ArrayOfQso">
+		  <sequence>
+		  <element name="qso_el" type="tns:Qso" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence> 
+     </xsd:complexType>
+
+    <xsd:complexType name="QsoUpdate">
+        <xsd:sequence>
+            <xsd:element name="qsoArray" type="typns:ArrayOfQso"/>
+            <xsd:element name="logState" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+
+    <xsd:complexType name="QsoIdVersion">
+        <xsd:sequence>
+            <xsd:element name="version" type="xsd:int"/>
+            <xsd:element name="updatedBy" type="xsd:string"/>
+            <xsd:element name="id" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ArrayOfQsoIdVersion">
+		  <sequence>
+		  <element name="id_el" type="tns:QsoIdVersion" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence> 
+    </xsd:complexType>
+
+    <xsd:complexType name="LogSummary">
+        <xsd:sequence>
+            <xsd:element name="logState" type="xsd:int"/>
+            <xsd:element name="logSummaryIds"
+                type="tns:ArrayOfQsoIdVersion"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+
+    <xsd:complexType
+          name="RigFrequency">
+	  <xsd:sequence>
+		  <xsd:element name="station"
+			  type="xsd:string"/>
+		  <xsd:element name="networkLetter"
+			  type="xsd:int"/>
+		  <xsd:element name="label"
+			  type="xsd:string"/>
+		  <xsd:element name="rigNumber"
+			  type="xsd:int"/>
+		  <xsd:element name="xmitFreq"
+			  type="xsd:double"/>
+		  <xsd:element name="recvFreq"
+			  type="xsd:double"/>
+		  <xsd:element name="mode"
+			  type="xsd:int"/>
+		</xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ArrayOfRigFrequency">
+		  <sequence>
+		  <element name="rf_el" type="tns:RigFrequency" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence> 
+    </xsd:complexType>
+
+  </schema>
+</types>
+
+<message name='ContestQsos_GetSessionId_Request'>
+</message>
+<message name='ContestQsos_GetSessionId_Response'>
+	<part name='response' type='xsd:string'/>
+</message>
+
+<message name='ContestQsos_addAndGetQsos_Request'>
+	<part name='SessionId' type='xsd:string'/>
+    <part name='QsoAddArray' type='typns:ArrayOfQso'/>
+    <part name='OldState' type='xsd:int'/>
+    <part name='MaxRequested' type='xsd:int'/>
+</message>
+
+<message name='ContestQsos_addAndGetQsos_Response'>
+    <part name='response' type='typns:QsoUpdate'/>
+</message>
+
+<message name='ContestQsos_AddAndGetLogSummary_Request'>
+	<part name='SessionId' type='xsd:string'/>
+    <part name='QsoAddArray' type='typns:ArrayOfQso'/>
+    <part name='OldState' type='xsd:int'/>
+    <part name='MaxRequested' type='xsd:int'/>
+</message>
+
+<message name='ContestQsos_AddAndGetLogSummary_Response'>
+    <part name='response' type='typns:LogSummary'/>
+</message>
+
+<message name='ContestQsos_getQsosByKeyArray_Request'>
+ 	<part name='SessionId' type='xsd:string'/>
+   <part name='QsoKeyArray' type='typns:ArrayOfstring'/>
+</message>
+<message name='ContestQsos_getQsosByKeyArray_Response'>
+    <part name='response' type='typns:QsoUpdate'/>
+</message>
+
+<message name='ContestQsos_ColumnNamesToIndices_Request'>
+	<part name='SessionId' type='xsd:string'/>
+    <part name='ColumnNames' type='typns:ArrayOfstring'/>
+</message>
+<message name='ContestQsos_ColumnNamesToIndices_Response'>
+    <part name='response' type='typns:ArrayOfint'/>
+</message>
+
+<message name='ContestRigs_ExchangeFrequencies_Request'>
+    <part name='IncomingFreqs' type='typns:ArrayOfRigFrequency'/>
+</message>
+<message name='ContestRigs_ExchangeFrequencies_Response'>
+    <part name='response' type='typns:ArrayOfRigFrequency'/>
+</message>
+
+
+<portType name="ContestQsos_Port">
+    <operation name='GetSessionId' >
+		<input name='GetSessionId' message='tns:ContestQsos_GetSessionId_Request'/>
+		<output name='GetSessionId' message='tns:ContestQsos_GetSessionId_Response'/>
+	</operation>
+	<operation name='addAndGetQsos' parameterOrder='SessionId QsoAddArray OldState MaxRequested'>
+        <input name='addAndGetQsos' message='tns:ContestQsos_addAndGetQsos_Request'/>
+        <output name='addAndGetQsos' message='tns:ContestQsos_addAndGetQsos_Response'/>
+    </operation>
+    <operation name='AddAndGetLogSummary' parameterOrder='SessionId QsoAddArray OldState MaxRequested'>
+        <input name='AddAndGetLogSummary' message='tns:ContestQsos_AddAndGetLogSummary_Request'/>
+        <output name='AddAndGetLogSummary' message='tns:ContestQsos_AddAndGetLogSummary_Response'/>
+    </operation>
+    <operation name='getQsosByKeyArray' parameterOrder='SessionId QsoKeyArray'>
+        <input name='getQsosByKeyArray' message='tns:ContestQsos_getQsosByKeyArray_Request'/>
+        <output name='getQsosByKeyArray' message='tns:ContestQsos_getQsosByKeyArray_Response'/>
+    </operation>
+    <operation name='ColumnNamesToIndices' parameterOrder='SessionId ColumnNames'>
+        <input name='ColumnNamesToIndices' message='tns:ContestQsos_ColumnNamesToIndices_Request'/>
+        <output name='ColumnNamesToIndices' message='tns:ContestQsos_ColumnNamesToIndices_Response'/>
+    </operation>
+    <operation name='ExchangeFrequencies' parameterOrder='IncomingFreqs'>
+        <input name='ExchangeFrequencies' message='tns:ContestRigs_ExchangeFrequencies_Request'/>
+        <output name='ExchangeFrequencies' message='tns:ContestRigs_ExchangeFrequencies_Response'/>
+    </operation>
+</portType>
+
+<binding 
+	name="ContestQsos_ServiceBinding" 
+	type="tns:ContestQsos_Port">
+  <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+    <operation name='GetSessionId'>
+        <soap:operation soapAction='' style='rpc'/>
+        <input name='GetSessionId'>
+            <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' namespace="urn:ContestQsos"/>
+        </input>
+        <output name='GetSessionId'>
+            <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' namespace="urn:ContestQsos"/>
+        </output>
+    </operation>
+    <operation name='AddAndGetLogSummary'>
+        <soap:operation soapAction='' style='rpc'/>
+        <input name='AddAndGetLogSummary'>
+            <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' namespace="urn:ContestQsos"/>
+        </input>
+        <output name='AddAndGetLogSummary'>
+            <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' namespace="urn:ContestQsos"/>
+        </output>
+    </operation>
+    <operation name='addAndGetQsos'>
+        <soap:operation soapAction='' style='rpc'/>
+        <input name='addAndGetQsos'>
+            <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' namespace="urn:ContestQsos"/>
+        </input>
+        <output name='addAndGetQsos'>
+            <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' namespace="urn:ContestQsos"/>
+        </output>
+    </operation>
+    <operation name='getQsosByKeyArray'>
+        <soap:operation soapAction='' style='rpc'/>
+        <input name='getQsosByKeyArray'>
+            <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' namespace="urn:ContestQsos"/>
+        </input>
+        <output name='getQsosByKeyArray'>
+            <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' namespace="urn:ContestQsos"/>
+        </output>
+    </operation>
+    <operation name='ColumnNamesToIndices'>
+        <soap:operation soapAction='' style='rpc'/>
+        <input name='ColumnNamesToIndices'>
+            <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' namespace="urn:ContestQsos"/>
+        </input>
+        <output name='ColumnNamesToIndices'>
+            <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' namespace="urn:ContestQsos"/>
+        </output>
+    </operation>
+    
+    <operation name='ExchangeFrequencies'>
+        <soap:operation soapAction='' style='rpc'/>
+        <input name='ExchangeFrequencies'>
+            <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' namespace="urn:ContestQsos"/>
+        </input>
+        <output name='ExchangeFrequencies'>
+            <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' namespace="urn:ContestQsos"/>
+        </output>
+    </operation>
+</binding>
+
+
+<service name="ContestQsos_Service">
+  <documentation>Contest QSO Service</documentation>
+  <port binding="tns:ContestQsos_ServiceBinding" 
+		name="ContestQsos_Port">
+    <soap:address location="http://localhost:8001"/>
+  </port>
+</service>
+
+
+</definitions>

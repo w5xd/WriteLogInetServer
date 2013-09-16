@@ -1,0 +1,5 @@
+The executable in this directory was built using g++ on an ubuntu distribution.
+The executable bit probably needs to be changed after you unzip using this command:
+  chmod +x WritelogInetServer
+If it still won't run, then cd to the "source" directory in this tree and execute the "make" command.
+It assumes the gnu c++ compiler is installed.
