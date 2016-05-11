@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <mutex>
 #include "stdsoap2.h"
 
 // performance tuned paramters
@@ -160,6 +161,20 @@ static const int RIG_FREQ_TIMEOUT = 5 * 60;
 ** the one at qsoparts[3]. 
 ** 
 */
+
+/* forward references 
+**
+*/
+namespace C1 {
+     class contest2__Qso;
+}
+namespace C2 {
+     class contest25__Qso;
+}
+void SetQsoParts(const std::vector<std::string> &other, C1::contest2__Qso *q);
+std::vector<std::string> GetQsoParts(const C1::contest2__Qso &q);
+void SetQsoParts(const std::vector<std::string> &other, C2::contest25__Qso *q);
+std::vector<std::string> GetQsoParts(const C2::contest25__Qso &q);
 
 // reference counted pointer template class
 template <class T>
@@ -342,8 +357,11 @@ class ContestQsos
 {
     typedef rcPtr<Qso> QsoPtr;
     typedef rcPtr<QsoPtr> QsoPtrPtr;
+    typedef std::lock_guard<std::mutex> lock_t;
 public:
-    ContestQsos() : m_verbose(false), m_limitLableTo6(false)
+    ContestQsos() 
+       : m_verbose(false)
+       , m_limitLableTo6(false)
     {
         time_t now;
         ::time(&now);
@@ -353,13 +371,14 @@ public:
     }
 
     std::string GetSessionId()
-    {		return m_sessionId;	}
+    {	return m_sessionId;	} // no locks cuz session never changes
 
     bool SessionOK(const std::string &s)
-    {		return s == m_sessionId;	}
+    {   return s == m_sessionId;	}
 
     bool useridAndPswdOK(const char *userid, const char *password)
-    {
+    {   
+        lock_t l(m_pwdMutex); 
         if (usernameToPassword.size() == 0)
             return true;	// no password file--anything goes
         if (!userid) return false; // no user provided
@@ -391,7 +410,7 @@ public:
         std::vector<T2 * > &pOut,
         int &logState)
     {
-
+        lock_t l(m_mutex); 
         int CurSize = LogbookOrderedByTransaction.size();
         int QsosInUpdate = CurSize - OldState;
         if (QsosInUpdate < 0)
@@ -440,6 +459,7 @@ public:
             int &logState
             )
     {
+        lock_t l(m_mutex);  
         getQsosSinceState(OldState, MaxRequested, pOut, createF, logState, s);
         bool SentUpToDate = (logState == LogbookOrderedByTransaction.size());
         AddQsos(QsoAddArray);
@@ -458,6 +478,7 @@ public:
         std::vector<T * > &r,
         int &logState)
     {
+        lock_t l(m_mutex); 
         for (int i = 0; i < QsoKeyArray.size(); i += 1)
         {
             r.push_back((*createF)(s));
@@ -475,6 +496,7 @@ public:
         std::vector<std::string> &cols, 
         std::vector<int> &response)
     {
+        lock_t l(m_mutex); 
         {
             response.resize(cols.size());
             for (int i =0; i < cols.size(); i++)
@@ -502,6 +524,7 @@ public:
             std::vector<T * > &IncomingFreqs, 
             std::vector<T * > &param_5)
     {
+        lock_t l(m_mutex); 
         if (m_verbose)
             std::cout << "ExchangeFrequencies " << IncomingFreqs.size() << " frequencies received" << std::endl;
         for (int i = 0; i < IncomingFreqs.size(); i += 1)
@@ -544,7 +567,8 @@ public:
 
     // read a file and populate our username/password map
     bool readUserFile(const std::string &fname)
-    {	
+    {
+        lock_t l(m_pwdMutex); 	
         std::ifstream pwdFile(fname.c_str());
         if (!pwdFile.is_open())
             return false;
@@ -666,7 +690,8 @@ protected:
     std::map<std::string, std::string> usernameToPassword;
 
     bool m_verbose;
-
+    mutable std::mutex m_mutex;
+    mutable std::mutex m_pwdMutex;
     bool m_limitLableTo6;
 };
 
