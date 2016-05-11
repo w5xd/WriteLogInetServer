@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{2d42b1ee-c9c3-4582-ab7b-c056dfd3a95f}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{f847f9f4-f297-4ca4-b6f7-97819c544c01}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="other">
+      <UniqueIdentifier>{9f786b87-0e2c-465b-8eed-dcf77d223826}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{71a9c6b7-4056-4c9d-84b3-50cdb6a5819d}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="C1C.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C1impl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C1Server.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C2C.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C2impl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C2Server.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="envC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="envServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdsoap2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WritelogInetServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C1ContestQsos_USCOREServiceBindingObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C1H.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C1Stub.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C2BasicHttpBinding_USCOREIContestQsosObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C2H.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C2Stub.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="envH.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="envStub.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdsoap2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="ContestQsos.wsdl">
+      <Filter>other</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C1.nsmap">
+      <Filter>other</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C2.nsmap">
+      <Filter>other</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ContestQsos.h">
+      <Filter>other</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ContestQsos2.h">
+      <Filter>other</Filter>
+    </CustomBuild>
+    <CustomBuild Include="env.h">
+      <Filter>other</Filter>
+    </CustomBuild>
+    <CustomBuild Include="makedist.cmd">
+      <Filter>other</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Makefile">
+      <Filter>other</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Readme.doc">
+      <Filter>other</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>

@@ -422,7 +422,7 @@ public:
         {
             T2 *qso = (*createF)(s);
             pOut.push_back(qso);
-            if (OldState >= LogbookOrderedByTransaction.size())
+            if (OldState >= (int)LogbookOrderedByTransaction.size())
                 return soap_receiver_fault(s, "OldState out of range", "");
             QsoPtr q = *LogbookOrderedByTransaction[OldState];
             qso->id = q->idKey;
@@ -479,7 +479,7 @@ public:
         int &logState)
     {
         lock_t l(m_mutex); 
-        for (int i = 0; i < QsoKeyArray.size(); i += 1)
+        for (int i = 0; i < (int)QsoKeyArray.size(); i += 1)
         {
             r.push_back((*createF)(s));
             (*id2QsoTable[QsoKeyArray[i]])->copy(r.back(), s);
@@ -499,7 +499,7 @@ public:
         lock_t l(m_mutex); 
         {
             response.resize(cols.size());
-            for (int i =0; i < cols.size(); i++)
+            for (int i =0; i < (int)cols.size(); i++)
             {
                 std::map<std::string,int>::iterator itor = ExfNames.find(cols[i]);
                 if (itor == ExfNames.end())
@@ -527,7 +527,7 @@ public:
         lock_t l(m_mutex); 
         if (m_verbose)
             std::cout << "ExchangeFrequencies " << IncomingFreqs.size() << " frequencies received" << std::endl;
-        for (int i = 0; i < IncomingFreqs.size(); i += 1)
+        for (int i = 0; i < (int)IncomingFreqs.size(); i += 1)
         {
             RigFrequency rf(*IncomingFreqs[i], m_limitLableTo6);
             std::map<std::string, RigFrequency>::iterator I = id2RigFrequencyTable.find(rf.keyString());
@@ -597,7 +597,7 @@ protected:
     template <class T>
     void AddQsos(std::vector<T * > &QsoAddArray)
     {
-        for (int j = 0; j < QsoAddArray.size(); j += 1)
+        for (int j = 0; j < (int)QsoAddArray.size(); j += 1)
         {
             T *qNew = QsoAddArray[j];
             std::string &key = qNew->idKey;
