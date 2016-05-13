@@ -1,7 +1,6 @@
 // These are the implementations that get called from WL V10--the SOAP SDK V2 client
 
 #include "ServerState.h"
-#include "C1ContestQsos_USCOREServiceBindingObject.h"
 #include "C1.nsmap"
 
 void SetQsoParts(const std::vector<std::string> &other, C1::contest2__Qso *q)

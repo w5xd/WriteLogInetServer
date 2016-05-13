@@ -1,0 +1,6 @@
+contest21 = "http://tempuri.org/"
+contest22 = "urn:ContestQsos2/Imports"
+contest23 = "urn:ContestQsos2"
+contest24 = "http://schemas.microsoft.com/2003/10/Serialization/"
+contest25 = "http://schemas.datacontract.org/2004/07/ContestQsos"
+contest26 = "http://schemas.microsoft.com/2003/10/Serialization/Arrays"

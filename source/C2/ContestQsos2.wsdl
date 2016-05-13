@@ -1,0 +1,390 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:tns="urn:ContestQsos2" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" targetNamespace="urn:ContestQsos2" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+    <!--This file was generated from a skeleton c# server using the command :
+        svcutil GsoapInterop.exe
+        followed by some judicious editing. The svcutil command is available from the VS command prompt.
+        The editing is to copy/paste the <xs:schema> tag and its contents from each of the 4 .xsd files that svcutil generated to this <wsdl:types> element.
+        The result is this standalone wsdl that the gsoap wsdl2h processor can use.
+        ...
+        There is more. 
+        In this <wsdl:types> element there are a lot of minOccurs="0" that have to be changed "1". Any element that is not part of an Array should be changed to 1.
+        And Anything in the WriteLog-specific types that is a 
+            nillable="true" type="xs:string"
+        needs that nillable set to "false" instead. The end result is to remove a lot of pointer-to in the resulting ContestQso2.h
+       -->
+  <wsdl:types>
+    <xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/Arrays" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="ArrayOfstring">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfstring" nillable="true" type="tns:ArrayOfstring" />
+      <xs:complexType name="ArrayOfint">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="int" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfint" nillable="true" type="tns:ArrayOfint" />
+    </xs:schema>
+    <xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="anyType" nillable="true" type="xs:anyType" />
+      <xs:element name="anyURI" nillable="true" type="xs:anyURI" />
+      <xs:element name="base64Binary" nillable="true" type="xs:base64Binary" />
+      <xs:element name="boolean" nillable="true" type="xs:boolean" />
+      <xs:element name="byte" nillable="true" type="xs:byte" />
+      <xs:element name="dateTime" nillable="true" type="xs:dateTime" />
+      <xs:element name="decimal" nillable="true" type="xs:decimal" />
+      <xs:element name="double" nillable="true" type="xs:double" />
+      <xs:element name="float" nillable="true" type="xs:float" />
+      <xs:element name="int" nillable="true" type="xs:int" />
+      <xs:element name="long" nillable="true" type="xs:long" />
+      <xs:element name="QName" nillable="true" type="xs:QName" />
+      <xs:element name="short" nillable="true" type="xs:short" />
+      <xs:element name="string" nillable="true" type="xs:string" />
+      <xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte" />
+      <xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt" />
+      <xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong" />
+      <xs:element name="unsignedShort" nillable="true" type="xs:unsignedShort" />
+      <xs:element name="char" nillable="true" type="tns:char" />
+      <xs:simpleType name="char">
+        <xs:restriction base="xs:int" />
+      </xs:simpleType>
+      <xs:element name="duration" nillable="true" type="tns:duration" />
+      <xs:simpleType name="duration">
+        <xs:restriction base="xs:duration">
+          <xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?" />
+          <xs:minInclusive value="-P10675199DT2H48M5.4775808S" />
+          <xs:maxInclusive value="P10675199DT2H48M5.4775807S" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="guid" nillable="true" type="tns:guid" />
+      <xs:simpleType name="guid">
+        <xs:restriction base="xs:string">
+          <xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:attribute name="FactoryType" type="xs:QName" />
+      <xs:attribute name="Id" type="xs:ID" />
+      <xs:attribute name="Ref" type="xs:IDREF" />
+    </xs:schema>
+    <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/ContestQsos" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/ContestQsos" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xs:complexType name="ArrayOfQso">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Qso" type="tns:Qso" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfQso" nillable="true" type="tns:ArrayOfQso" />
+      <xs:complexType name="Qso">
+        <xs:annotation>
+          <xs:appinfo>
+            <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+          </xs:appinfo>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="1" name="band" type="xs:int" />
+          <xs:element minOccurs="1" name="dupe" type="xs:int" />
+          <xs:element minOccurs="1" name="idKey" nillable="false" type="xs:string" />
+          <xs:element minOccurs="1" name="mode" type="xs:int" />
+          <xs:element minOccurs="1" name="qsoparts" nillable="true" xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" type="q1:ArrayOfstring" />
+          <xs:element minOccurs="1" name="recvFreq" type="xs:double" />
+          <xs:element minOccurs="1" name="serial" type="xs:int" />
+          <xs:element minOccurs="1" name="station" nillable="false" type="xs:string" />
+          <xs:element minOccurs="1" name="time64H" type="xs:int" />
+          <xs:element minOccurs="1" name="time64L" type="xs:int" />
+          <xs:element minOccurs="1" name="updatedBy" nillable="false" type="xs:string" />
+          <xs:element minOccurs="1" name="version" type="xs:int" />
+          <xs:element minOccurs="1" name="xmitFreq" type="xs:double" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Qso" nillable="true" type="tns:Qso" />
+      <xs:complexType name="QsoUpdate">
+        <xs:annotation>
+          <xs:appinfo>
+            <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+          </xs:appinfo>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="1" name="logState" type="xs:int" />
+          <xs:element minOccurs="1" name="qsoArray" nillable="true" type="tns:ArrayOfQso" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="QsoUpdate" nillable="true" type="tns:QsoUpdate" />
+      <xs:complexType name="LogSummary">
+        <xs:annotation>
+          <xs:appinfo>
+            <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+          </xs:appinfo>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="1" name="logState" type="xs:int" />
+          <xs:element minOccurs="1" name="logSummaryIds" nillable="true" type="tns:ArrayOfQsoIdVersion" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="LogSummary" nillable="true" type="tns:LogSummary" />
+      <xs:complexType name="ArrayOfQsoIdVersion">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="QsoIdVersion" type="tns:QsoIdVersion" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfQsoIdVersion" nillable="true" type="tns:ArrayOfQsoIdVersion" />
+      <xs:complexType name="QsoIdVersion">
+        <xs:annotation>
+          <xs:appinfo>
+            <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+          </xs:appinfo>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="1" name="id" nillable="false" type="xs:string" />
+          <xs:element minOccurs="1" name="updatedBy" nillable="false" type="xs:string" />
+          <xs:element minOccurs="1" name="version" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="QsoIdVersion" nillable="true" type="tns:QsoIdVersion" />
+      <xs:complexType name="ArrayOfRigFrequency">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="unbounded" name="RigFrequency" type="tns:RigFrequency" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfRigFrequency" nillable="true" type="tns:ArrayOfRigFrequency" />
+      <xs:complexType name="RigFrequency">
+        <xs:annotation>
+          <xs:appinfo>
+            <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+          </xs:appinfo>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="1" name="label" nillable="false" type="xs:string" />
+          <xs:element minOccurs="1" name="mode" type="xs:int" />
+          <xs:element minOccurs="1" name="networkLetter" type="xs:int" />
+          <xs:element minOccurs="1" name="recvFreq" type="xs:double" />
+          <xs:element minOccurs="1" name="rigNumber" type="xs:int" />
+          <xs:element minOccurs="1" name="station" nillable="false" type="xs:string" />
+          <xs:element minOccurs="1" name="xmitFreq" type="xs:double" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="RigFrequency" nillable="true" type="tns:RigFrequency" />
+    </xs:schema>
+    <xs:schema xmlns:tns="urn:ContestQsos2" elementFormDefault="qualified" targetNamespace="urn:ContestQsos2" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://schemas.datacontract.org/2004/07/ContestQsos" />
+      <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xs:element name="GetSessionId">
+        <xs:complexType>
+          <xs:sequence />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetSessionIdResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" name="GetSessionIdResult" nillable="false" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="addAndGetQsos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" name="SessionId" nillable="false" type="xs:string" />
+            <xs:element minOccurs="1" name="QsoAddArray" nillable="true" xmlns:q1="http://schemas.datacontract.org/2004/07/ContestQsos" type="q1:ArrayOfQso" />
+            <xs:element minOccurs="1" name="OldState" type="xs:int" />
+            <xs:element minOccurs="1" name="MaxRequested" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="addAndGetQsosResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" name="addAndGetQsosResult" xmlns:q2="http://schemas.datacontract.org/2004/07/ContestQsos" type="q2:QsoUpdate" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="AddAndGetLogSummary">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" name="SessionId" nillable="false" type="xs:string" />
+            <xs:element minOccurs="1" name="QsoAddArray" nillable="true" xmlns:q3="http://schemas.datacontract.org/2004/07/ContestQsos" type="q3:ArrayOfQso" />
+            <xs:element minOccurs="1" name="OldState" type="xs:int" />
+            <xs:element minOccurs="1" name="MaxRequested" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="AddAndGetLogSummaryResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" name="AddAndGetLogSummaryResult" xmlns:q4="http://schemas.datacontract.org/2004/07/ContestQsos" type="q4:LogSummary" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getQsosByKeyArray">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" name="SessionId" nillable="false" type="xs:string" />
+            <xs:element minOccurs="1" name="QsoKeyArray" nillable="true" xmlns:q5="http://schemas.microsoft.com/2003/10/Serialization/Arrays" type="q5:ArrayOfstring" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getQsosByKeyArrayResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" name="getQsosByKeyArrayResult" xmlns:q6="http://schemas.datacontract.org/2004/07/ContestQsos" type="q6:QsoUpdate" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ColumnNamesToIndices">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" name="SessionId" nillable="false" type="xs:string" />
+            <xs:element minOccurs="1" name="ColumnNames" nillable="true" xmlns:q7="http://schemas.microsoft.com/2003/10/Serialization/Arrays" type="q7:ArrayOfstring" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ColumnNamesToIndicesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" name="ColumnNamesToIndicesResult" nillable="true" xmlns:q8="http://schemas.microsoft.com/2003/10/Serialization/Arrays" type="q8:ArrayOfint" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ExchangeFrequencies">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" name="IncomingFreqs" nillable="true" xmlns:q9="http://schemas.datacontract.org/2004/07/ContestQsos" type="q9:ArrayOfRigFrequency" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ExchangeFrequenciesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" name="ExchangeFrequenciesResult" nillable="true" xmlns:q10="http://schemas.datacontract.org/2004/07/ContestQsos" type="q10:ArrayOfRigFrequency" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+    <xsd:schema targetNamespace="urn:ContestQsos2/Imports">
+      <xsd:import namespace="urn:ContestQsos2" />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/ContestQsos" />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IContestQsos_GetSessionId_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSessionId" />
+  </wsdl:message>
+  <wsdl:message name="IContestQsos_GetSessionId_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSessionIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="IContestQsos_addAndGetQsos_InputMessage">
+    <wsdl:part name="parameters" element="tns:addAndGetQsos" />
+  </wsdl:message>
+  <wsdl:message name="IContestQsos_addAndGetQsos_OutputMessage">
+    <wsdl:part name="parameters" element="tns:addAndGetQsosResponse" />
+  </wsdl:message>
+  <wsdl:message name="IContestQsos_AddAndGetLogSummary_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddAndGetLogSummary" />
+  </wsdl:message>
+  <wsdl:message name="IContestQsos_AddAndGetLogSummary_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddAndGetLogSummaryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IContestQsos_getQsosByKeyArray_InputMessage">
+    <wsdl:part name="parameters" element="tns:getQsosByKeyArray" />
+  </wsdl:message>
+  <wsdl:message name="IContestQsos_getQsosByKeyArray_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getQsosByKeyArrayResponse" />
+  </wsdl:message>
+  <wsdl:message name="IContestQsos_ColumnNamesToIndices_InputMessage">
+    <wsdl:part name="parameters" element="tns:ColumnNamesToIndices" />
+  </wsdl:message>
+  <wsdl:message name="IContestQsos_ColumnNamesToIndices_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ColumnNamesToIndicesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IContestQsos_ExchangeFrequencies_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExchangeFrequencies" />
+  </wsdl:message>
+  <wsdl:message name="IContestQsos_ExchangeFrequencies_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExchangeFrequenciesResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IContestQsos">
+    <wsdl:operation name="GetSessionId">
+      <wsdl:input wsaw:Action="urn:ContestQsos2/IContestQsos/GetSessionId" message="tns:IContestQsos_GetSessionId_InputMessage" />
+      <wsdl:output wsaw:Action="urn:ContestQsos2/IContestQsos/GetSessionIdResponse" message="tns:IContestQsos_GetSessionId_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="addAndGetQsos">
+      <wsdl:input wsaw:Action="urn:ContestQsos2/IContestQsos/addAndGetQsos" message="tns:IContestQsos_addAndGetQsos_InputMessage" />
+      <wsdl:output wsaw:Action="urn:ContestQsos2/IContestQsos/addAndGetQsosResponse" message="tns:IContestQsos_addAndGetQsos_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddAndGetLogSummary">
+      <wsdl:input wsaw:Action="urn:ContestQsos2/IContestQsos/AddAndGetLogSummary" message="tns:IContestQsos_AddAndGetLogSummary_InputMessage" />
+      <wsdl:output wsaw:Action="urn:ContestQsos2/IContestQsos/AddAndGetLogSummaryResponse" message="tns:IContestQsos_AddAndGetLogSummary_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getQsosByKeyArray">
+      <wsdl:input wsaw:Action="urn:ContestQsos2/IContestQsos/getQsosByKeyArray" message="tns:IContestQsos_getQsosByKeyArray_InputMessage" />
+      <wsdl:output wsaw:Action="urn:ContestQsos2/IContestQsos/getQsosByKeyArrayResponse" message="tns:IContestQsos_getQsosByKeyArray_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ColumnNamesToIndices">
+      <wsdl:input wsaw:Action="urn:ContestQsos2/IContestQsos/ColumnNamesToIndices" message="tns:IContestQsos_ColumnNamesToIndices_InputMessage" />
+      <wsdl:output wsaw:Action="urn:ContestQsos2/IContestQsos/ColumnNamesToIndicesResponse" message="tns:IContestQsos_ColumnNamesToIndices_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExchangeFrequencies">
+      <wsdl:input wsaw:Action="urn:ContestQsos2/IContestQsos/ExchangeFrequencies" message="tns:IContestQsos_ExchangeFrequencies_InputMessage" />
+      <wsdl:output wsaw:Action="urn:ContestQsos2/IContestQsos/ExchangeFrequenciesResponse" message="tns:IContestQsos_ExchangeFrequencies_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DefaultBinding_IContestQsos" type="tns:IContestQsos">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetSessionId">
+      <soap:operation soapAction="urn:ContestQsos2/IContestQsos/GetSessionId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="addAndGetQsos">
+      <soap:operation soapAction="urn:ContestQsos2/IContestQsos/addAndGetQsos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddAndGetLogSummary">
+      <soap:operation soapAction="urn:ContestQsos2/IContestQsos/AddAndGetLogSummary" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getQsosByKeyArray">
+      <soap:operation soapAction="urn:ContestQsos2/IContestQsos/getQsosByKeyArray" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ColumnNamesToIndices">
+      <soap:operation soapAction="urn:ContestQsos2/IContestQsos/ColumnNamesToIndices" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExchangeFrequencies">
+      <soap:operation soapAction="urn:ContestQsos2/IContestQsos/ExchangeFrequencies" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+</wsdl:definitions>

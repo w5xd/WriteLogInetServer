@@ -7,6 +7,7 @@
 #include <string>
 #include <fstream>
 #include <mutex>
+#include <memory>
 #include "stdsoap2.h"
 
 // performance tuned paramters
@@ -176,52 +177,6 @@ std::vector<std::string> GetQsoParts(const C1::contest2__Qso &q);
 void SetQsoParts(const std::vector<std::string> &other, C2::contest25__Qso *q);
 std::vector<std::string> GetQsoParts(const C2::contest25__Qso &q);
 
-// reference counted pointer template class
-template <class T>
-class rcPtr	
-{
-public:
-    // default constructor
-    rcPtr() : m_refCount(0), m_ptr(0)	{}
-
-    // copy constructor
-    rcPtr(const rcPtr &r) : m_ptr(r.m_ptr), m_refCount(r.m_refCount)
-    {		if (m_refCount)	*m_refCount += 1;	}
-
-    // construct from a raw pointer to T
-    rcPtr(T *q) : m_refCount(new unsigned), m_ptr(q) 	{*m_refCount = 1;}
-
-    // destructor
-    ~rcPtr(){close();}
-
-    // assignment operator
-    rcPtr & operator = (const rcPtr &other)
-    {
-        close();
-        m_ptr = other.m_ptr;
-        m_refCount = other.m_refCount;
-        if (m_refCount)	*m_refCount += 1;
-        return *this;
-    }
-
-    T * operator -> () const {return m_ptr;}
-    T & operator * () const {return *m_ptr;}
-protected:
-    void close()	// decrement refCount and decide what to do
-    {
-        if (m_refCount)
-        {
-            *m_refCount -= 1;
-            if (*m_refCount == 0)
-            {
-                delete m_refCount;
-                delete m_ptr;
-            }
-        }
-    }
-    T *m_ptr;
-    unsigned *m_refCount;
-};
 
 /*
 ** The templated members of Qso and RigFrequency are made to copy to/from
@@ -355,8 +310,8 @@ protected:
 */
 class ContestQsos
 {
-    typedef rcPtr<Qso> QsoPtr;
-    typedef rcPtr<QsoPtr> QsoPtrPtr;
+    typedef std::shared_ptr<Qso> QsoPtr;
+    typedef std::shared_ptr<QsoPtr> QsoPtrPtr;
     typedef std::lock_guard<std::mutex> lock_t;
 public:
     ContestQsos() 

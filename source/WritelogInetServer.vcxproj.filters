@@ -50,16 +50,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C1ContestQsos_USCOREServiceBindingObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="C1H.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="C1Stub.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C2BasicHttpBinding_USCOREIContestQsosObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="C2H.h">
@@ -82,9 +76,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="ContestQsos.wsdl">
-      <Filter>other</Filter>
-    </CustomBuild>
     <CustomBuild Include="C1.nsmap">
       <Filter>other</Filter>
     </CustomBuild>
@@ -100,13 +91,16 @@
     <CustomBuild Include="env.h">
       <Filter>other</Filter>
     </CustomBuild>
-    <CustomBuild Include="makedist.cmd">
-      <Filter>other</Filter>
-    </CustomBuild>
     <CustomBuild Include="Makefile">
       <Filter>other</Filter>
     </CustomBuild>
     <CustomBuild Include="Readme.doc">
+      <Filter>other</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\bin\ContestQsos.wsdl">
+      <Filter>other</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ContestQsos2.wsdl">
       <Filter>other</Filter>
     </CustomBuild>
   </ItemGroup>

@@ -1,5 +1,6 @@
 *~
 source/Release/*
+source/Debug/*
 source/*.ncb
 source/*.suo
 source/*.user
