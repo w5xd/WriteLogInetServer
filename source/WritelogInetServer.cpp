@@ -13,6 +13,7 @@
 #include <iostream>
 #include <set>
 #include <thread>
+#include <condition_variable>
 #include "ServerState.h"
 #include "envH.h"
 #include "C1Stub.h"
@@ -76,12 +77,94 @@ class CombinedNamespaces
         std::set<std::string> ids;
 };
 
+/* ProcessingQueue
+** pool a fixed number of threads to process incoming soap requests.
+*/
+class ProcessingQueue
+{
+public:
+    ProcessingQueue(unsigned numThreads) 
+            :  m_shutdown(false)
+            , m_threadsReady(0)
+    {   // start the threads up front.
+        while (numThreads-- > 0)
+            m_threads.push_back(std::thread(std::bind(&ProcessingQueue::process, this)));
+    }
+    ~ProcessingQueue() {
+        shutdown();
+    }
+    void addItem(soap *s)
+    {
+        // take over ownership of the soap ptr
+        std::shared_ptr<soap> p(s, [](soap *p)
+        {
+            soap_destroy(p);
+            soap_end(p);
+            soap_done(p);
+            free(p);
+        });
+        lock_t l(m_mutex);
+        m_queue.push_back(p);
+        m_condIn.notify_one();
+    }
+    void WaitToAccepMore() const
+    {
+       lock_t l(m_mutex);
+       while (m_threadsReady == 0)
+           m_condOut.wait(l);
+    }
+    void shutdown()
+    {
+        {
+            lock_t l(m_mutex);
+            m_shutdown = true;
+            m_condIn.notify_all();
+        }
+        for (auto &t : m_threads)
+            t.join();
+        m_threads.clear();
+    }
+protected:
+    typedef std::unique_lock<std::mutex> lock_t;
+
+    void process()
+    {   
+        for (;;)
+        {
+            std::shared_ptr<soap> p;
+            {
+                lock_t l(m_mutex);
+                m_threadsReady += 1;
+                m_condOut.notify_one();
+                while (!m_shutdown && m_queue.empty())
+                    m_condIn.wait(l);
+                if (m_shutdown)
+                    return;
+                p = m_queue.front();
+                m_queue.pop_front();
+                m_threadsReady -= 1;
+            }
+            if (soap_serve(p.get()) != SOAP_OK) // process RPC request
+                soap_print_fault(p.get(), stdout); // print error
+        }
+    }
+
+    mutable std::mutex m_mutex;
+    mutable std::condition_variable m_condIn;
+    mutable std::condition_variable m_condOut;
+    std::deque<std::shared_ptr<soap>> m_queue;
+    std::vector<std::thread> m_threads;
+    int m_threadsReady;
+    bool m_shutdown;
+};
+
 int main(int argc, char **argv)
 {
     std::string userFile = "NONE";
     int portNumber = 8001;
     ContestQsos state;
     bool l6Flag = false;
+    unsigned numThreads = 1;
 
     for (int i = 1; i < argc; i++)
     {
@@ -105,6 +188,8 @@ int main(int argc, char **argv)
                 << "   The number must be in the range of 1 through 65534. Different operating" << std::endl
                 << "   systems, internet providers, and routers will allow or not allow various" << std::endl
                 << "   port numbers through." << std::endl
+                << "-t <number of threads>" << std::endl
+                << "   number of threads to use to serve. Limited to 10 max. Default is 1." << std::endl
                 << "-L6 " << std::endl
                 << "   turns on the limit-labels-to-6-characters flag, which then rejects invalid input" << std::endl
                 << "   from WriteLog versions earlier than 10.76." << std::endl
@@ -148,6 +233,19 @@ int main(int argc, char **argv)
             state.setL6Flag(true);
             l6Flag = true;
         }
+        else if (arg == "-t")
+        {
+            if ((++i >= argc) || !isdigit(argv[i][0]))
+            {
+                std::cout << "-t must be followed by number of threads." << std::endl;
+                return 1;
+            }
+            numThreads = atoi(argv[i]);
+            if (numThreads > 10)
+                numThreads = 10;
+            if (numThreads == 0)
+                numThreads = 1; // we run really, really slowly otherwise.
+        }
         else
         {
             std::cout << "Unrecognized argument: " << arg << std::endl;
@@ -170,20 +268,23 @@ int main(int argc, char **argv)
     service.accept_timeout =
         service.recv_timeout =
         service.send_timeout = 10;
+    service.max_keep_alive = 100;
     service.fget = &http_get; 
     service.namespaces = &combinedNamespaces.combinedNamespaces[0];
-    int m; // master 
+    SOAP_SOCKET m; // master 
     m = soap_bind(&service, 0, portNumber, MAX_CLIENT_BACKLOG);
-    if (m < 0)
+    if (!soap_valid_socket(m))
         soap_print_fault(&service, stdout);
     else
     {
+        std::unique_ptr<ProcessingQueue> pq(new ProcessingQueue(numThreads));
         for (int i = 1; ; i++)
         {
             if (!keepRunning)
                 break;
-            int s = soap_accept(&service);
-            if (s < 0)  continue; // keep running until we get shutdown
+            pq->WaitToAccepMore();
+            SOAP_SOCKET s = soap_accept(&service);
+            if (!soap_valid_socket(s))  continue; // keep running until we get shutdown
             if (state.verbose())
             {
                 std::cout << "Accepted connection from IP=" <<
@@ -192,12 +293,16 @@ int main(int argc, char **argv)
                     (service.ip>>8 & 0xFF) << "." <<
                     (service.ip & 0xFF) << std::endl << std::flush;
             }
-            if (soap_serve(&service) != SOAP_OK) // process RPC request
-                soap_print_fault(&service, stdout); // print error
-            if (state.verbose()) std::cout << "Request served" << std::endl << std::flush;
-            soap_destroy(&service); // clean up class instances
-            soap_end(&service);
+            soap *cpy = soap_copy(&service);
+            if (!cpy)
+            {
+                std::cerr << "Failed to copy soap for thread!" << std::endl;
+                break;
+            }
+            if (state.verbose()) std::cout << "Request dispatched" << std::endl << std::flush;
+            pq->addItem(cpy);
         }
+        pq->shutdown();
     }
     soap_done(&service); // close master socket and detach environment
     return 0;
