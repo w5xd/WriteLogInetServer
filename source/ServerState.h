@@ -206,12 +206,13 @@ public:
           qsoparts(GetQsoParts(soapQ))
       {}
 
-      const int time64H;		const int time64L;	
-      const double xmitFreq;	const double recvFreq;	
-      const int band;	
-      const std::string station;	
-      const int mode;	
-      const int dupe;	
+      const int time64H;		const int time64L;	// Win32 FILETIME
+      const double xmitFreq;	const double recvFreq;	// KHz
+      const int band;	// as duped. 0 is first band, 1 is second and so forth
+      const std::string station;	// aka CALLSIGN
+      const int mode;	// 0x31 ('1') is LSB, '2' USB, '3' CW,
+					    // '4' FM , '5' AM , '6' FSK
+      const int dupe;	// 32 is not-a-dupe (ascii space). 'D' is 0x44 and is a dupe. 'B' is 0x42 and is not-in-any-band
       const int serial;	
       const std::vector<std::string> qsoparts;	
       /*
@@ -228,7 +229,7 @@ public:
       **
       */
       const int version;	
-      const std::string idKey;	
+      const std::string idKey;	// assigned by client. needs to be unique across the network
       const std::string updatedBy;	
 
       // copy contents to a SOAP version of a QSO
