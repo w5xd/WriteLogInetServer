@@ -25,6 +25,7 @@
 //    WritelogInetServer.cpp (this file)
 //    C1impl.cpp
 //    C2impl.cpp
+//    ContestQsos.wsdl and ContestQsos2.wsdl
 //  The others are generated this way:
 //
 // pushd C1
@@ -36,6 +37,17 @@
 // soapcpp2 -L -S -IC:\dev\gsoap-2.8\gsoap\import -x -w -n -qC2 ContestQsos2.h
 // soapcpp2 -L -S env.h -penv
 //
+
+/* What is this C1 with ContestQsos.wsdl and C2 with ContestQsos2.wsdl all about?
+** WriteLog V10 used an old Microsoft SOAP technology where ContestQsos.wsdl originated.
+** WriteLog V11 supports that, but alternatively has a .net equivalent, but I was unable
+** to figure out how to make a .NET client serve that original ContestQsos.wsdl so
+** ContestQsos2.wsdl was born. It has exactly the same features, but different SOAP
+** namespace goop. 
+**
+** So we need a server that can talk both dialects. Hense, C1 and C2.
+**
+*/
 
 static const int MAX_CLIENT_BACKLOG = 20;
 
@@ -95,19 +107,19 @@ public:
     }
     void addItem(soap *s)
     {
-        // take over ownership of the soap ptr
-        std::shared_ptr<soap> p(s, [](soap *p)
-        {
-            soap_destroy(p);
-            soap_end(p);
-            soap_done(p);
-            free(p);
+        // take ownership of the soap ptr
+        std::shared_ptr<soap> p(s, []/*deleter*/(soap *t)
+        {   
+            soap_destroy(t);
+            soap_end(t);
+            soap_done(t);
+            free(t);
         });
         lock_t l(m_mutex);
         m_queue.push_back(p);
         m_condIn.notify_one();
     }
-    void WaitToAccepMore() const
+    void waitToAccepMore() const
     {
        lock_t l(m_mutex);
        while (m_threadsReady == 0)
@@ -126,7 +138,6 @@ public:
     }
 protected:
     typedef std::unique_lock<std::mutex> lock_t;
-
     void process()
     {   
         for (;;)
@@ -282,7 +293,7 @@ int main(int argc, char **argv)
         {
             if (!keepRunning)
                 break;
-            pq->WaitToAccepMore();
+            pq->waitToAccepMore();
             SOAP_SOCKET s = soap_accept(&service);
             if (!soap_valid_socket(s))  continue; // keep running until we get shutdown
             if (state.verbose())
@@ -299,7 +310,6 @@ int main(int argc, char **argv)
                 std::cerr << "Failed to copy soap for thread!" << std::endl;
                 break;
             }
-            if (state.verbose()) std::cout << "Request dispatched" << std::endl << std::flush;
             pq->addItem(cpy);
         }
         pq->shutdown();

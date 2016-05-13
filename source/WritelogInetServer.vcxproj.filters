@@ -16,6 +16,12 @@
       <UniqueIdentifier>{71a9c6b7-4056-4c9d-84b3-50cdb6a5819d}</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
+    <Filter Include="other\C1">
+      <UniqueIdentifier>{35f72855-f930-4dd3-aa8c-e5e5fd4e3930}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="other\C2">
+      <UniqueIdentifier>{da1218c0-5e1b-48c8-a6b1-ecde76fff699}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C1C.cpp">
@@ -76,18 +82,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C1.nsmap">
-      <Filter>other</Filter>
-    </CustomBuild>
-    <CustomBuild Include="C2.nsmap">
-      <Filter>other</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ContestQsos.h">
-      <Filter>other</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ContestQsos2.h">
-      <Filter>other</Filter>
-    </CustomBuild>
     <CustomBuild Include="env.h">
       <Filter>other</Filter>
     </CustomBuild>
@@ -97,11 +91,31 @@
     <CustomBuild Include="Readme.doc">
       <Filter>other</Filter>
     </CustomBuild>
-    <CustomBuild Include="..\bin\ContestQsos.wsdl">
-      <Filter>other</Filter>
+    <CustomBuild Include="C1.nsmap">
+      <Filter>other\C1</Filter>
     </CustomBuild>
-    <CustomBuild Include="ContestQsos2.wsdl">
-      <Filter>other</Filter>
+    <CustomBuild Include="ContestQsos.h">
+      <Filter>other\C1</Filter>
     </CustomBuild>
+    <CustomBuild Include="C1\ContestQsos.wsdl">
+      <Filter>other\C1</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C2.nsmap">
+      <Filter>other\C2</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ContestQsos2.h">
+      <Filter>other\C2</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C2\ContestQsos2.wsdl">
+      <Filter>other\C2</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C1\typemap.dat">
+      <Filter>other\C1</Filter>
+    </None>
+    <None Include="C2\typemap.dat">
+      <Filter>other\C2</Filter>
+    </None>
   </ItemGroup>
 </Project>
