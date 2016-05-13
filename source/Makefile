@@ -14,7 +14,7 @@ GPP = \
     g++ -std=c++11
 
 WritelogInetServer: $(OBJS)
-	$(GPP) -O2 -o WritelogInetServer $(OBJS)  -lpthread -static
+	$(GPP) -O2 -o WritelogInetServer $(OBJS)  -lpthread
 
 envServer.o: envServer.cpp ServerState.h
 	$(GPP) -O2 -DWITH_NOSERVEREQUEST -c envServer.cpp
