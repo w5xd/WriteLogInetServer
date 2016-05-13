@@ -366,6 +366,8 @@ public:
         int &logState)
     {
         lock_t l(m_mutex); 
+        if (m_verbose)
+            std::cout << "AddAnGetLogSummary" << std::endl;
         int CurSize = LogbookOrderedByTransaction.size();
         int QsosInUpdate = CurSize - OldState;
         if (QsosInUpdate < 0)
@@ -415,6 +417,8 @@ public:
             )
     {
         lock_t l(m_mutex);  
+        if (m_verbose)
+            std::cout << "addAndGetQsos" << std::endl;
         getQsosSinceState(OldState, MaxRequested, pOut, createF, logState, s);
         bool SentUpToDate = (logState == LogbookOrderedByTransaction.size());
         AddQsos(QsoAddArray);
@@ -434,6 +438,8 @@ public:
         int &logState)
     {
         lock_t l(m_mutex); 
+        if (m_verbose)
+            std::cout << "getQsosByKeyArray" << std::endl;
         for (int i = 0; i < (int)QsoKeyArray.size(); i += 1)
         {
             r.push_back((*createF)(s));
@@ -452,6 +458,8 @@ public:
         std::vector<int> &response)
     {
         lock_t l(m_mutex); 
+        if (m_verbose)
+            std::cout << "ColumnNamesToIndices" << std::endl;
         {
             response.resize(cols.size());
             for (int i =0; i < (int)cols.size(); i++)
