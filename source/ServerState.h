@@ -443,8 +443,13 @@ public:
             std::cout << "getQsosByKeyArray" << std::endl;
         for (int i = 0; i < (int)QsoKeyArray.size(); i += 1)
         {
-            r.push_back((*createF)(s));
-            (*id2QsoTable[QsoKeyArray[i]])->copy(r.back(), s);
+            std::map<std::string, QsoPtrPtr>::iterator itor = 
+                id2QsoTable.find(QsoKeyArray[i]);
+            if (itor != id2QsoTable.end())
+            {
+                r.push_back((*createF)(s));
+                (*itor->second)->copy(r.back(), s);
+            }
         }
         logState = LogbookOrderedByTransaction.size();
         if (m_verbose)
