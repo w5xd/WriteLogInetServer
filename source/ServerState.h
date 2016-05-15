@@ -450,6 +450,9 @@ public:
                 r.push_back((*createF)(s));
                 (*itor->second)->copy(r.back(), s);
             }
+            else
+                return soap_receiver_fault(s, "Invalid QSO key", "");
+
         }
         logState = LogbookOrderedByTransaction.size();
         if (m_verbose)
