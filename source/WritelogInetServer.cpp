@@ -137,15 +137,15 @@ protected:
             std::shared_ptr<soap> p;
             {
                 lock_t l(m_mutex);
-                m_threadsReady += 1;
                 m_condOut.notify_one();
+                m_threadsReady += 1;
                 while (!m_shutdown && m_queue.empty())
                     m_condIn.wait(l);
+                m_threadsReady -= 1;
                 if (m_shutdown)
                     return;
                 p = m_queue.front();
                 m_queue.pop_front();
-                m_threadsReady -= 1;
             }
             if (soap_serve(p.get()) != SOAP_OK) // process RPC request
                 soap_print_fault(p.get(), stdout); // print error
