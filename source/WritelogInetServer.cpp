@@ -105,16 +105,8 @@ public:
     ~ProcessingQueue() {
         shutdown();
     }
-    void addItem(soap *s)
+    void addItem(std::shared_ptr<soap> p)
     {
-        // take ownership of the soap ptr
-        std::shared_ptr<soap> p(s, []/*deleter*/(soap *t)
-        {   
-            soap_destroy(t);
-            soap_end(t);
-            soap_done(t);
-            free(t);
-        });
         lock_t l(m_mutex);
         m_queue.push_back(p);
         m_condIn.notify_one();
@@ -304,7 +296,16 @@ int main(int argc, char **argv)
                     (service.ip>>8 & 0xFF) << "." <<
                     (service.ip & 0xFF) << std::endl << std::flush;
             }
-            soap *cpy = soap_copy(&service);
+            // copy service and assign ownership
+            std::shared_ptr<soap> cpy(
+                soap_copy(&service), 
+                []/*deleter*/(soap *t)
+                    {   
+                        soap_destroy(t);
+                        soap_end(t);
+                        soap_done(t);
+                        free(t);
+                    });
             if (!cpy)
             {
                 std::cerr << "Failed to copy soap for thread!" << std::endl;
