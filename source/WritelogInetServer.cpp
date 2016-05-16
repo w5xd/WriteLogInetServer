@@ -168,6 +168,7 @@ int main(int argc, char **argv)
     ContestQsos state;
     bool l6Flag = false;
     unsigned numThreads = 1;
+    bool bindOnlyLocalhost = true;
 
     for (int i = 1; i < argc; i++)
     {
@@ -196,6 +197,8 @@ int main(int argc, char **argv)
                 << "-L6 " << std::endl
                 << "   turns on the limit-labels-to-6-characters flag, which then rejects invalid input" << std::endl
                 << "   from WriteLog versions earlier than 10.76." << std::endl
+                << "-bindAll" << std::endl
+                << "   enables internet connections on all IP addresses for this machine."
                 << std::endl;
             return 1;
         }
@@ -249,6 +252,10 @@ int main(int argc, char **argv)
             if (numThreads == 0)
                 numThreads = 1; // we run really, really slowly otherwise.
         }
+        else if (arg == "-bindAll")
+        {
+            bindOnlyLocalhost = false;
+        }
         else
         {
             std::cout << "Unrecognized argument: " << arg << std::endl;
@@ -274,8 +281,13 @@ int main(int argc, char **argv)
     service.max_keep_alive = 100;
     service.fget = &http_get; 
     service.namespaces = &combinedNamespaces.combinedNamespaces[0];
+    const char *localHost = "localhost";
+    if (!bindOnlyLocalhost)
+        std::cerr << "Binding to the IP address of this host" << std::endl;
     SOAP_SOCKET m; // master 
-    m = soap_bind(&service, 0, portNumber, MAX_CLIENT_BACKLOG);
+    m = soap_bind(&service, 
+        bindOnlyLocalhost ? localHost : 0, 
+        portNumber, MAX_CLIENT_BACKLOG);
     if (!soap_valid_socket(m))
         soap_print_fault(&service, stdout);
     else
