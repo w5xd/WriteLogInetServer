@@ -5,3 +5,4 @@ source/*.ncb
 source/*.suo
 source/*.user
 source/*.sln
+bin/linux64

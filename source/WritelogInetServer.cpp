@@ -13,6 +13,7 @@
 #include <iostream>
 #include <set>
 #include <thread>
+#include <functional>
 #include <condition_variable>
 #include "ServerState.h"
 #include "envH.h"
