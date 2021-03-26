@@ -1,4 +1,4 @@
-// These are the implementations that get called from WL V11--the CLR-based client
+// These are the implementations that get called from WL V11 and up--the CLR-based client
 
 #include "ServerState.h"
 #include "C2.nsmap"

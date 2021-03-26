@@ -2,6 +2,7 @@
 
 #include "ServerState.h"
 #include "C1.nsmap"
+#include "C1Stub.h"
 
 void SetQsoParts(const std::vector<std::string> &other, C1::contest2__Qso *q)
 {
@@ -35,7 +36,7 @@ namespace C1
     }
 
 /// Web service operation 'GetSessionId' (returns error code or SOAP_OK)
-int contest3__GetSessionId(soap *s, std::string &response)
+int contest1__GetSessionId(soap *s, std::string &response)
 {
     if (!appState(s)->useridAndPswdOK(s->userid, s->passwd))
         return 401;	// for GetSession--user must provide password
@@ -44,9 +45,9 @@ int contest3__GetSessionId(soap *s, std::string &response)
 }
 
 /// Web service operation 'AddAndGetLogSummary' (returns error code or SOAP_OK)
-int contest3__AddAndGetLogSummary(soap *s, std::string _SessionId, 
+int contest1__AddAndGetLogSummary(soap *s, std::string _SessionId, 
                 contest2__ArrayOfQso *_QsoAddArray, int OldState, int MaxRequested, 
-                struct contest3__AddAndGetLogSummaryResponse &_param_1)
+                struct contest1__AddAndGetLogSummaryResponse &_param_1)
 {
     if (!appState(s)->SessionOK(_SessionId))
         return soap_receiver_fault(s, "Invalid SessionId", "The Session ID must match the one sent at initialization time");
@@ -62,11 +63,11 @@ int contest3__AddAndGetLogSummary(soap *s, std::string _SessionId,
 }
 
 /// Web service operation 'addAndGetQsos' (returns error code or SOAP_OK)
-int contest3__addAndGetQsos(soap *s, std::string _SessionId, 
+int contest1__addAndGetQsos(soap *s, std::string _SessionId, 
                                                            contest2__ArrayOfQso *_QsoAddArray, 
                                                            int _OldState, 
                                                            int _MaxRequested, 
-                        struct contest3__addAndGetQsosResponse &_param_2)
+                        struct contest1__addAndGetQsosResponse &_param_2)
 {
     if (!appState(s)->SessionOK(_SessionId))
         return soap_receiver_fault(s, "Invalid SessionId", "The Session ID must match the one sent at initialization time");
@@ -80,10 +81,10 @@ int contest3__addAndGetQsos(soap *s, std::string _SessionId,
 }
 
 /// Web service operation 'getQsosByKeyArray' (returns error code or SOAP_OK)
-int contest3__getQsosByKeyArray(soap *s, 
+int contest1__getQsosByKeyArray(soap *s, 
         std::string _SessionId, 
           contest2__ArrayOfstring *_QsoKeyArray, 
-                struct contest3__getQsosByKeyArrayResponse &_param_3)
+                struct contest1__getQsosByKeyArrayResponse &_param_3)
 {
     if (!appState(s)->SessionOK(_SessionId))
         return soap_receiver_fault(s, "Invalid SessionId", "The Session ID must match the one sent at initialization time");
@@ -100,10 +101,10 @@ int contest3__getQsosByKeyArray(soap *s,
 }
 
 /// Web service operation 'ColumnNamesToIndices' (returns error code or SOAP_OK)
-int contest3__ColumnNamesToIndices(soap *s, 
+int contest1__ColumnNamesToIndices(soap *s, 
     std::string _SessionId, 
     contest2__ArrayOfstring *_ColumnNames, 
-    struct contest3__ColumnNamesToIndicesResponse &_param_4)
+    struct contest1__ColumnNamesToIndicesResponse &_param_4)
 {
     if (!appState(s)->SessionOK(_SessionId))
         return soap_receiver_fault(s, "Invalid SessionId", "The Session ID must match the one sent at initialization time");
@@ -117,9 +118,9 @@ int contest3__ColumnNamesToIndices(soap *s,
 }
 
 /// Web service operation 'ExchangeFrequencies' (returns error code or SOAP_OK)
-int contest3__ExchangeFrequencies(soap *s, 
+int contest1__ExchangeFrequencies(soap *s, 
         contest2__ArrayOfRigFrequency *_IncomingFreqs, 
-        struct contest3__ExchangeFrequenciesResponse &_param_5)
+        struct contest1__ExchangeFrequenciesResponse &_param_5)
 {
     if (!_IncomingFreqs) return SOAP_NO_DATA;
     _param_5._response = soap_new_contest2__ArrayOfRigFrequency(s, 1);

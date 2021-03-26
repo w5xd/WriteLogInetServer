@@ -6,6 +6,7 @@ OBJS = \
     C2impl.o \
     C2Server.o \
     envC.o \
+    envimpl.o \
     envServer.o \
     stdsoap2.o \
     WritelogInetServer.o
@@ -19,8 +20,11 @@ WritelogInetServer: $(OBJS)
 envServer.o: envServer.cpp ServerState.h
 	$(GPP) -O2 -DWITH_NOSERVEREQUEST -c envServer.cpp
 
+envimpl.o: envimpl.cpp envH.h
+	$(GPP) -O2 -c envimpl.cpp
+
 stdsoap2.o: stdsoap2.cpp ServerState.h
-	$(GPP) -O2 -DWITH_NONAMESPACES -c stdsoap2.cpp
+	$(GPP) -fpermissive -O2 -DWITH_NONAMESPACES -c stdsoap2.cpp
 
 C1C.o: C1C.cpp ServerState.h
 	$(GPP) -O2 -c C1C.cpp

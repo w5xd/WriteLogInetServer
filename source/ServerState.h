@@ -9,6 +9,8 @@
 #include <mutex>
 #include <memory>
 #include "stdsoap2.h"
+#include "C1H.h"
+#include "C2H.h"
 
 // performance tuned paramters
 static const int MAX_QSOS_IN_UPDATE = 200;
@@ -166,12 +168,6 @@ static const int RIG_FREQ_TIMEOUT = 5 * 60;
 /* forward references 
 **
 */
-namespace C1 {
-     class contest2__Qso;
-}
-namespace C2 {
-     class contest25__Qso;
-}
 void SetQsoParts(const std::vector<std::string> &other, C1::contest2__Qso *q);
 std::vector<std::string> GetQsoParts(const C1::contest2__Qso &q);
 void SetQsoParts(const std::vector<std::string> &other, C2::contest25__Qso *q);
