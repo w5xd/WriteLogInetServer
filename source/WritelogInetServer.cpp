@@ -336,7 +336,7 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_serve_request(struct soap *soap)
     // try the other. C1 is WL v10, and C2 is WL v11
     int ret = C2::C2_serve_request(soap);
     if (ret == SOAP_NO_METHOD)
-        return C1::C1_serve_request(soap);
+        ret = C1::C1_serve_request(soap);
     return ret;
 }
 
