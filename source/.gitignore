@@ -3,3 +3,5 @@
 *.sdf
 WritelogInetServer
 soap.nsmap
+Win32
+X64
